@@ -1,0 +1,317 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Numerics;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Schema;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
+public class GameManager
+{
+    //Fields
+    private CardDeck deck;
+    private Discard discardPile;
+    public Player[] players;
+
+    private const int StartHandSize = 7;
+    public Card _topCard;
+
+    //Constructors
+    public GameManager()
+    {
+        deck = new();
+
+        discardPile = new();
+        players = new Player[4];
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i] = new();
+            players[i].PlayerId = (i + 1);
+        }
+    }
+
+    public GameManager(int playerCount)
+    {
+        deck = new();
+        discardPile = new();
+        players = new Player[playerCount];
+
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i] = new();
+            players[i].PlayerId = (i + 1);
+        }
+    }
+
+    //Getters
+    public int playerLength()
+    {
+        return this.players.Length;
+    }
+
+    public Player getPlayer(int index)
+    {
+        return players[index];
+    }
+
+    //Cool Methods
+    public void PlayerStart()
+    {
+        foreach (Player player in players)
+        {
+            for (int numOfCards = 0; numOfCards < StartHandSize; numOfCards++)
+            {
+                PlayerDraw(player);
+            }
+        }
+        
+
+
+
+    }
+
+    //public void PlayerDiscard(Card discarded)
+    //{
+
+    //}
+
+    public void ShowHand(int index)
+    {
+        // Console.WriteLine(players[index]);
+        int count = 1;
+        foreach (Card card in players[index].Hand)
+        {
+            Console.ForegroundColor = Card.GetConsoleColor(card.Color);
+            Console.WriteLine($"{count++}. {card}");
+        }
+    }
+
+    public List<Card> GetHand(int index)
+    {
+        return players[index].Hand;
+    }
+
+    public void PlayerDraw(Player player)
+    {
+        Console.ResetColor();
+        player.AddCard(deck.DrawFromDeck());
+    }
+
+    public void playCard(int player, int cardIndex)
+    {
+        Card discarded = players[player].DiscardCard(cardIndex);
+        TopCard = discarded;
+    }
+
+    public bool IsLegal(Card card, int currentPlayer)    //Original
+    {
+        if (card.Color == TopCard.Color || card.Value == TopCard.Value)
+        {
+        }
+        else if (card.Value == -2) //If ur card is +4 
+        {
+        }
+        else if (card.Value == 11 && TopCard.Value == -2)    //If ur car is +4
+        {
+        }
+        else if (card.Value == -1)
+        {
+        }
+        else if (card.Value == 12 && TopCard.Color == card.Color)
+        {
+        }
+        else if (card.Value == 10 && TopCard.Color == card.Color)
+        {
+        }
+        else
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool IsLegal(Card card, int currentPlayer, bool isStacked)    //Overloaded
+    {
+        if (card.Color == TopCard.Color || card.Value == TopCard.Value)
+        {
+        }
+
+        else if (card.Value == -2 && card.Value == TopCard.Value && card.Color == TopCard.Color)
+        {
+        }
+        else if (card.Value == 11 && TopCard.Value == -2)    //If ur car is +4
+        {
+        }
+        else if (card.Value == -1 && card.Value == TopCard.Value && card.Color == TopCard.Color)
+        {
+        }
+        else if (card.Value == 12 && TopCard.Color == card.Color)
+        {
+        }
+        else if (card.Value == 10 && TopCard.Color == card.Color)
+        {
+        }
+        else
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public void RunCard(Card card, int currentPlayer, bool isStacked)
+    {
+        if (card.Color == TopCard.Color || card.Value == TopCard.Value)
+        {
+        }
+        else if (card.Value == -2 && card.Value == TopCard.Value && card.Color == TopCard.Color)
+        {
+            ChangeCardColor();
+            TopCard = card;
+            for (int i = 0; i < 4; i++)
+            {
+                PlayerDraw(players[nextPlayer(currentPlayer)]);
+            }
+        }
+        else if (card.Value == 11 && TopCard.Value == -2)    //If ur card is +4
+        {
+            ChangeCardColor();
+            TopCard = card;
+            for (int i = 0; i < 2; i++) //draws two no?
+            {
+                PlayerDraw(players[nextPlayer(currentPlayer)]);
+            }
+        }
+        else if (card.Value == -1 && card.Value == TopCard.Value && card.Color == TopCard.Color)
+        {
+            ChangeCardColor();
+            TopCard = card;
+        }
+        else if (card.Value == 12 && TopCard.Color == card.Color)
+        {
+            players.Reverse();
+            TopCard = card;
+        }
+        else if (card.Value == 10 && TopCard.Color == card.Color)
+        {
+            players[currentPlayer] = players[nextPlayer(nextPlayer(currentPlayer))];
+            TopCard = card;
+        }
+    }
+
+    public void RunCard(Card card, int currentPlayer)
+    {
+        if (card.Color == TopCard.Color || card.Value == TopCard.Value)
+        {
+        }
+        else if (card.Value == -2) //If ur card is +4 
+        {
+            ChangeCardColor();
+            TopCard = card;
+            for (int i = 0; i < 4; i++)
+            {
+                PlayerDraw(players[nextPlayer(currentPlayer)]);
+            }
+
+        }
+        else if (card.Value == 11 && TopCard.Value == -2)    //If ur car is +4
+        {
+            ChangeCardColor();
+            TopCard = card;
+            for (int i = 0; i < 2; i++)
+            {
+                PlayerDraw(players[nextPlayer(currentPlayer)]);
+            }
+        }
+        else if (card.Value == -1)
+        {
+            TopCard = card;
+            ChangeCardColor();
+        }
+        else if (card.Value == 12 && TopCard.Color == card.Color)
+        {
+            TopCard = card;
+            players.Reverse();
+        }
+        else if (card.Value == 10 && TopCard.Color == card.Color)
+        {
+            players[currentPlayer] = players[nextPlayer(nextPlayer(currentPlayer))];
+            TopCard = card;
+        }
+    }
+
+    public bool IsStackable(int currentPlayer)
+    {
+        foreach (Card card in players[currentPlayer].Hand)
+        {
+            if (TopCard.Value == card.Value || TopCard.Color == card.Color)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void ChangeCardColor()
+    {
+        Console.Write("What color would you like to change to?: ");
+        TopCard.Color = Card.CardColorValidation(Console.ReadLine());
+    }
+
+    public CardDeck Deck
+    {
+        get { return deck; }
+    }
+
+    public Discard DiscardPile
+    {
+        get { return discardPile; }
+    }
+
+    public Player[] Players
+    {
+        get { return players; }
+    }
+
+    public Card TopCard
+    {
+        get { return _topCard; }
+        set { _topCard = value; }
+    }
+
+    public bool IsGameOver()
+    {
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (Player.IsHandEmpty(players[i]) || deck.IsDeckEmpty())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int nextPlayer(int currentPlayer)
+    {
+        if (currentPlayer < players.Length - 1)
+        {
+            return currentPlayer + 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+
+    //public void SortCards(int currentPlayer)
+    //{
+    //    players[currentPlayer].Hand.ToString().Sort();
+    //}
+} //END OF CLASS!
+

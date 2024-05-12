@@ -1,0 +1,14 @@
+C:\Users\gaben\source\repos\UnoGame\UnoGame\obj\Debug\net8.0\UnoGame.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gaben\source\repos\UnoGame\UnoGame\obj\Debug\net8.0\UnoGame.AssemblyInfoInputs.cache
+C:\Users\gaben\source\repos\UnoGame\UnoGame\obj\Debug\net8.0\UnoGame.AssemblyInfo.cs
+C:\Users\gaben\source\repos\UnoGame\UnoGame\obj\Debug\net8.0\UnoGame.csproj.CoreCompileInputs.cache
+C:\Users\gaben\source\repos\UnoGame\UnoGame\bin\Debug\net8.0\UnoGame.exe
+C:\Users\gaben\source\repos\UnoGame\UnoGame\bin\Debug\net8.0\UnoGame.deps.json
+C:\Users\gaben\source\repos\UnoGame\UnoGame\bin\Debug\net8.0\UnoGame.runtimeconfig.json
+C:\Users\gaben\source\repos\UnoGame\UnoGame\bin\Debug\net8.0\UnoGame.dll
+C:\Users\gaben\source\repos\UnoGame\UnoGame\bin\Debug\net8.0\UnoGame.pdb
+C:\Users\gaben\source\repos\UnoGame\UnoGame\obj\Debug\net8.0\UnoGame.dll
+C:\Users\gaben\source\repos\UnoGame\UnoGame\obj\Debug\net8.0\refint\UnoGame.dll
+C:\Users\gaben\source\repos\UnoGame\UnoGame\obj\Debug\net8.0\UnoGame.pdb
+C:\Users\gaben\source\repos\UnoGame\UnoGame\obj\Debug\net8.0\UnoGame.genruntimeconfig.cache
+C:\Users\gaben\source\repos\UnoGame\UnoGame\obj\Debug\net8.0\ref\UnoGame.dll

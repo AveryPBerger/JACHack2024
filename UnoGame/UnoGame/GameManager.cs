@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Schema;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-public class GameManager
+﻿public class GameManager
 {
     //Fields
     private CardDeck deck;
@@ -68,7 +58,7 @@ public class GameManager
                 PlayerDraw(player);
             }
         }
-        
+        TopCard = deck.DrawFromDeck();
 
 
 
@@ -106,69 +96,38 @@ public class GameManager
         Card discarded = players[player].DiscardCard(cardIndex);
         TopCard = discarded;
     }
-
-    public bool IsLegal(Card card, int currentPlayer)    //Original
+    public bool IsLegal(Card card, bool stacking)
     {
-        if (card.Color == TopCard.Color || card.Value == TopCard.Value)
+        if (stacking)
         {
-        }
-        else if (card.Value == -2) //If ur card is +4 
-        {
-        }
-        else if (card.Value == 11 && TopCard.Value == -2)    //If ur car is +4
-        {
-        }
-        else if (card.Value == -1)
-        {
-        }
-        else if (card.Value == 12 && TopCard.Color == card.Color)
-        {
-        }
-        else if (card.Value == 10 && TopCard.Color == card.Color)
-        {
+            if (card.Color == TopCard.Color || card.Value == TopCard.Value)
+            {
+                return true;
+            }
         }
         else
         {
-            return false;
-        }
 
-        return true;
+            if (card.Color == TopCard.Color || card.Value == TopCard.Value || card.Value < 0)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public bool IsLegal(Card card, int currentPlayer, bool isStacked)    //Overloaded
+    public bool IsLegal(Card card)    //Original
     {
-        if (card.Color == TopCard.Color || card.Value == TopCard.Value)
+        if (card.Color == TopCard.Color || card.Value == TopCard.Value || card.Value < 0)
         {
+            return true;
         }
 
-        else if (card.Value == -2 && card.Value == TopCard.Value && card.Color == TopCard.Color)
-        {
-        }
-        else if (card.Value == 11 && TopCard.Value == -2)    //If ur car is +4
-        {
-        }
-        else if (card.Value == -1 && card.Value == TopCard.Value && card.Color == TopCard.Color)
-        {
-        }
-        else if (card.Value == 12 && TopCard.Color == card.Color)
-        {
-        }
-        else if (card.Value == 10 && TopCard.Color == card.Color)
-        {
-        }
-        else
-        {
-            return false;
-        }
-        return true;
+        return false;
     }
-
     public void RunCard(Card card, int currentPlayer, bool isStacked)
     {
-        if (card.Color == TopCard.Color || card.Value == TopCard.Value)
-        {
-        }
-        else if (card.Value == -2 && card.Value == TopCard.Value && card.Color == TopCard.Color)
+        if (card.Value == -2) //Wild Draw 4
         {
             ChangeCardColor();
             TopCard = card;
@@ -177,7 +136,7 @@ public class GameManager
                 PlayerDraw(players[nextPlayer(currentPlayer)]);
             }
         }
-        else if (card.Value == 11 && TopCard.Value == -2)    //If ur card is +4
+        else if (card.Value == 11)    //Draw 2
         {
             ChangeCardColor();
             TopCard = card;
@@ -186,63 +145,59 @@ public class GameManager
                 PlayerDraw(players[nextPlayer(currentPlayer)]);
             }
         }
-        else if (card.Value == -1 && card.Value == TopCard.Value && card.Color == TopCard.Color)
+        else if (card.Value == -1) // wild normal
         {
             ChangeCardColor();
-            TopCard = card;
         }
-        else if (card.Value == 12 && TopCard.Color == card.Color)
+        else if (card.Value == 12) // Reverse
         {
             players.Reverse();
-            TopCard = card;
         }
-        else if (card.Value == 10 && TopCard.Color == card.Color)
+        else if (card.Value == 10) // Skip
         {
             players[currentPlayer] = players[nextPlayer(nextPlayer(currentPlayer))];
-            TopCard = card;
         }
     }
 
     public void RunCard(Card card, int currentPlayer)
     {
-        if (card.Color == TopCard.Color || card.Value == TopCard.Value)
+        if (card.Value == -2) //Wild Draw 4
         {
-        }
-        else if (card.Value == -2) //If ur card is +4 
-        {
-            ChangeCardColor();
             TopCard = card;
             for (int i = 0; i < 4; i++)
             {
                 PlayerDraw(players[nextPlayer(currentPlayer)]);
             }
-
         }
-        else if (card.Value == 11 && TopCard.Value == -2)    //If ur car is +4
+        else if (card.Value == 11)    //Draw 2
         {
-            ChangeCardColor();
             TopCard = card;
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 2; i++) //draws two no?
             {
                 PlayerDraw(players[nextPlayer(currentPlayer)]);
             }
         }
-        else if (card.Value == -1)
+        else if (card.Value == -1) // wild normal
         {
-            TopCard = card;
             ChangeCardColor();
         }
-        else if (card.Value == 12 && TopCard.Color == card.Color)
+        else if (card.Value == 12) // Reverse
         {
-            TopCard = card;
             players.Reverse();
         }
-        else if (card.Value == 10 && TopCard.Color == card.Color)
+        else if (card.Value == 10) // Skip
         {
             players[currentPlayer] = players[nextPlayer(nextPlayer(currentPlayer))];
-            TopCard = card;
         }
     }
+
+
+
+    //-1: Color Change
+    //-2: Draw Four
+    //10: skip 
+    //11: Draw 2
+    //12: Reverse
 
     public bool IsStackable(int currentPlayer)
     {

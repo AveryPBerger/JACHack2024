@@ -10,6 +10,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class Program
 {
+    public static Random random = new();
     public static void Main()
     {
         Console.Write($"Welcome! How many players will be participating today? (2-4): ");
@@ -23,30 +24,39 @@ public class Program
                 if (!gm.IsGameOver())
                 {
                     Console.Clear();
-                    Console.WriteLine("------------------");
-                    Console.WriteLine("Player " + gm.getPlayer(i).PlayerId + "'s turn");
-                    Console.WriteLine("Current Card: " + gm.TopCard);
-                    Console.ResetColor();
-                    Console.WriteLine("------------------");
+
+                    
                     //Individual player turns go here.
                     if (i == 0)
                     {
+                        Console.WriteLine("------------------");
+                        Console.WriteLine("Player " + gm.getPlayer(i).PlayerId + "'s turn");
+                        Console.WriteLine("Current Card: " + gm.TopCard);
+                        Console.ResetColor();
+                        Console.WriteLine("------------------");
                         PlayerTurn(i, gm);
                     }
                     else
                     {
-                        ComputerTurn(i, gm);
+                        ComputerCardSelection(i, gm);
+                        Console.WriteLine("------------------");
+                        Console.WriteLine("Player " + gm.getPlayer(i).PlayerId + "'s turn");
+                        Console.WriteLine("Current Card: " + gm.TopCard);
+                        Console.ResetColor();
+                        Console.WriteLine("------------------");
                     }
 
+                    Console.ReadLine();
+                }
+                else
+                {
+                    Console.WriteLine("The Game Is Over!");
                     Console.ReadLine();
                 }
             }
         }
     }
-    public static void ComputerTurn(int index, GameManager gm)
-    {
 
-    }
 
     public static void PlayerTurn(int index, GameManager gm)
     {
@@ -60,23 +70,33 @@ public class Program
     {
         List<Card> cardlist = gm.GetHand(index);
         Card computerCard = null;
+        int cardIndex = 0;
         for (int card = 0; card < cardlist.Count; card++)
         {
-            if (gm.IsLegal(cardlist[card], index))
+            if (gm.IsLegal(cardlist[card]))
             {
-                gm.playCard(index, card);
+                computerCard = cardlist[card];
+                cardIndex = card;
             }
         }
 
         if (computerCard == null)
         {
             gm.PlayerDraw(gm.players[index]);
-            Console.WriteLine($"The Computer Drew A Card!");
+            Console.WriteLine($"The Computer Has No Available Moves Therefore Drew A Card!");
         }
         else
         {
+            if (cardlist[cardIndex].Value == -1)
+            {
+                int value = random.Next(0, 5);
+                gm.TopCard.Color = (Colors) value;
+            }
+            gm.RunCard(cardlist[cardIndex], index);
+            gm.playCard(index, cardIndex);
             Console.WriteLine($"The Computer Played A {computerCard}");
         }
+        Console.ReadLine();
 
     }
     public static void SelectCardsToPlay(GameManager gm, int index)
@@ -117,7 +137,7 @@ public class Program
         List<Card> cardlist = gm.GetHand(index);
         for (int i = 0; i < cardlist.Count; i++)
         {
-            if (gm.IsLegal(cardlist[i], index))
+            if (gm.IsLegal(cardlist[i]))
             {
                 Console.WriteLine($"{i + 1}. {cardlist[i]}");
             }
@@ -132,11 +152,11 @@ public class Program
     public static int CardValidation(GameManager gm, int index)
     {
         int num;
-        while (!int.TryParse(Console.ReadLine(), out num) || num > gm.players[index].HandLength() || num < 0)
+        while (!int.TryParse(Console.ReadLine(), out num) || num > gm.players[index].HandLength() || num < 0 || !gm.IsLegal(gm.GetHand(index)[num - 1]))
         {
-            if (num == gm.players[0].HandLength() + 1)
+            if (num == gm.players[0].HandLength())
             {
-                continue;
+                return num;
             }
             Console.ResetColor();
             Console.WriteLine("Please Enter a valid option");

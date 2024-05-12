@@ -8,19 +8,24 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\gaben\\.nuget\\packages\\": {}
+    "C:\\Users\\Home-PC1\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\gaben\\source\\repos\\UnoGame\\UnoGame\\UnoGame.csproj",
+      "projectUniqueName": "C:\\Users\\Home-PC1\\Downloads\\JACHack2024\\UnoGame\\UnoGame\\UnoGame.csproj",
       "projectName": "UnoGame",
-      "projectPath": "C:\\Users\\gaben\\source\\repos\\UnoGame\\UnoGame\\UnoGame.csproj",
-      "packagesPath": "C:\\Users\\gaben\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\gaben\\source\\repos\\UnoGame\\UnoGame\\obj\\",
+      "projectPath": "C:\\Users\\Home-PC1\\Downloads\\JACHack2024\\UnoGame\\UnoGame\\UnoGame.csproj",
+      "packagesPath": "C:\\Users\\Home-PC1\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Home-PC1\\Downloads\\JACHack2024\\UnoGame\\UnoGame\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\gaben\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Home-PC1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -40,11 +45,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -66,7 +66,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
